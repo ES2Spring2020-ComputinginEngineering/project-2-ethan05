@@ -10,10 +10,7 @@ from random import random
 
 #Function List
 def shortest_distance(x1,y1):
-    
-#shprtest_distance has two parameters X1 and y1.
-#The function finds the shortest length 
-    
+      
     length=[]
     for i in range(0,158):
         z = np.sqrt( (x1-x[i]) **2 + (y1-y[i]) **2)
@@ -24,6 +21,8 @@ def scale_x(x):
     
 #scale_x has the parameter x.
 #The function scales all the x data points down so the min value starts at 0.
+#It returns the new scale for the x value for each point.
+
     
     x_scale = []
     for i in range(0,158):
@@ -35,6 +34,7 @@ def scale_y(y):
     
 #scale_y has the parameter y.
 #The function scales all the y data points down so the min value starts at 0.
+#It returns the new scale for the y value for each point.
     
     y_scale = []
     for i in range(0,158):
@@ -46,6 +46,7 @@ def color(Class):
     
 #color has one parameter, Class.
 #It assigns data points with the class 1 to be blue and points with the class 0 to be red.
+#It returns a list which has the color for each point.
     
     color_list=[]
     for i in range(0,158):
@@ -61,6 +62,7 @@ def createTestCase():
     
 #createTestCase has no parameters.
 #It creates a random data point within the bounds given in the data set.
+#It returns a new point.
     
     rndm = []
     new_Blood_Glucose=random()
@@ -74,7 +76,8 @@ def createTestCase():
 def DistanceArray(newpoint):
     
 #DistanceArray has one parameter, newpoint. 
-#It finds the length between the new point and origin on new graph by scaling the new point by the same scale that the data set was scaled by.
+#It finds the length between the new point and origin on the new graph by scaling the new point by the same scale that the data set was scaled by.
+#It returns a list of these lengths.
     
     length=[]
     for i in range(0,158):
@@ -88,7 +91,8 @@ def nearestNeighborClassifier(newpoint):
 #convert list to array then use argmin to find index
     
 #nearestNeighborClassifier has one parameter, newpoint.
-#This function finds the closest point to the new point and classifies the new point as 0 or 1 depending on the classification of the nearest point.
+#This function finds the closest point to the new point and classifies the new point as 0 or 1 depending on the classification of the nearest point. 
+#It returns this classification.
 
     k=np.argmin(Array)
     return classification[k] #classification at index
@@ -96,7 +100,7 @@ def nearestNeighborClassifier(newpoint):
 def newcolor(newpoint):
     
 #newcolor has one parameter, newpoint.
-#It makes the new data point blue if it is classified as 1 or red if it is 0.
+#It makes the new data point blue if it is classified as 1 or red if it is 0. It returns a list of which data points should be red or blue. 
     
     newclass=nearestNeighborClassifier(newpoint)
     color_list=[]
@@ -111,7 +115,7 @@ def newcolor(newpoint):
 def graphtestcase(newpoint):
     
 #graphtestcase has one parameter, newpoint.
-#It plots the newly generated point with its correct color on the graph of the given data set graph.
+#It plots the newly generated point with its correct color on the graph of the given data set graph. There is no return value.
     
     plt.scatter(scale_x(hemoglobin) , scale_y(glucose) , s=1, color=color(classification))
     plt.scatter(newpoint[0],newpoint[1],s=100, color=newcolor(newpoint))
@@ -142,7 +146,7 @@ print(graphtestcase(new))
 def kNearestNeighborClassifier(k,newpoint):
     
 #kNearestNeighborClassifier has two parameters; k and newpoint.
-#Depending on the nearest point, it classifies the newpoint as 1 or 0.
+#Depending on the nearest point, it classifies the newpoint as 1 or 0. It returns either a 0 or 1 classification for every point.
     
     l=DistanceArray(newpoint)
     sorted_indices = np.argsort(l)
@@ -158,7 +162,7 @@ def kNearestNeighborClassifier(k,newpoint):
 def k_newcolor(k,newpoint): 
     
 #k_newcolor has two parameters; k and newpoint.
-#depending on the class of the new point, it will assign red for 0 and  for blue.
+#Depending on the class of the new point, it will assign red for 0 and  for blue. It returns a list of which data points should be red or blue.
     
     newclass=kNearestNeighborClassifier(k,newpoint)
     color_list=[]
@@ -173,7 +177,7 @@ def k_newcolor(k,newpoint):
 def graphktestcase(k,newpoint):
     
 #graphktestcase has two parameters; k and newpoint.
-#It graphs the new test point on the plot with the original data from the set.
+#It graphs the new test point on the plot with the original data from the set. There is no return value.
     
     plt.scatter(scale_x(hemoglobin) , scale_y(glucose) , s=1, color=color(classification))
     plt.scatter(newpoint[0],newpoint[1],s=100, color=k_newcolor(k,newpoint))
